@@ -2,8 +2,9 @@ import {useState} from 'react';
 import confetti from 'canvas-confetti';
 import { Square } from './components/Square';
 import { TURNS } from './constants.js'
-import { checkWinner } from './logic/board.js';
+import { checkWinner, checkEndGame } from './logic/board.js';
 import { WinnerModal } from './components/WinnerModal.jsx';
+import { initStorage, getItem, resetGameStorage } from './logic/storage/index.js';
 import './App.css'
 
 
@@ -11,9 +12,17 @@ import './App.css'
 
 function App() {
 
-  const [board,setBoard] = useState(Array(9).fill(null))
+  const [board,setBoard] = useState(() => 
+    {
+      if(window.localStorage.getItem('board')) return getItem('board')
+      return Array(9).fill(null)
+    })
 
-  const [turn, setTurn] = useState(TURNS.X)
+  const [turn, setTurn] = useState(() => 
+    {
+      if(window.localStorage.getItem('turn')) return getItem('turn')
+      return TURNS.X
+    })
 
   const [winner, setWinner] = useState(null)
 
@@ -22,13 +31,9 @@ function App() {
       setBoard(Array(9).fill(null))
       setTurn(TURNS.X)
       setWinner(null)
+      resetGameStorage()
     }
 
-  const checkEndGame = (boardToCheck) => 
-    {
-      return boardToCheck.every((square) => square != null)
-    }
-  
   const updateBoard = (index) => 
     {
       if(board[index] || winner ) return
@@ -37,7 +42,8 @@ function App() {
       setBoard(newBoard)
       const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
       setTurn(newTurn)
-
+      initStorage(newBoard, newTurn)
+      //initStorageFromLocalStorage({board: newBoard, turn: newTurn})
       const newWinner = checkWinner(newBoard)
       if(newWinner)
         {
@@ -50,9 +56,16 @@ function App() {
         }
     }
 
+  useEffect(()=>
+    {
+      console.log('Esto se ejecutará por primera vez al montar el componente y no se volverá a ejecutar')
+    },[])
+
+  useEffect(codigoAbitrario, listaDeDependencias)
   return(
     <main className="board">
       <h1>TaTeTi</h1>
+      <button onClick={resetGame}> Reiniciar partida</button>
       <section className="game">
         {
           board.map((_, index) => 
@@ -78,7 +91,7 @@ function App() {
         {TURNS.O}
       </Square>
     </section>
-    <WinnerModal winner={winner} resetGame={resetGame}></WinnerModal>
+    <WinnerModal winner={winner} resetGame={resetGame}/>
   </main>   
   )
 }
