@@ -1,0 +1,20 @@
+.btn-section
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 16px;
+}
+
+.count-section
+{
+  padding: 20px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.count
+{
+  font-size: 3rem;
+  color: rgb(32, 216, 176);
+}
+
