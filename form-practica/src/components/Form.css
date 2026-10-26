@@ -1,0 +1,21 @@
+fieldset {
+  color: rgba(152, 177, 13, 0.911);
+  background-color: rgba(46, 34, 34, 0.897);
+  width: 250px;
+}
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-wrapper .input-section {
+  display: flex;
+  flex-direction: column;
+}
+.input-section input {
+  height: 2rem;
+  border-radius: 6px;
+}
