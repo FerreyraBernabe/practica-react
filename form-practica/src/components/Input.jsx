@@ -1,25 +1,19 @@
-import { useState } from "react";
 
 export function Input({
+  inputRegister,
   label,
-  type,
-  name,
-  value,
-  handleChange,
-  error,
+  type = "text",
+  errors
 }) {
   return (
     <>
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={inputRegister.name}>{label}</label>
       <input
-        id={name}
+        id={inputRegister.name}
         type={type}
-        name={name}
-        value={value}
-        onChange={handleChange}
-        required
+        {...inputRegister}
       />
-      {error != "" && (
+      {errors && (
         <span
           style={{
             color: "red",
@@ -27,7 +21,9 @@ export function Input({
             fontStyle: "italic",
           }}
         >
-          Error: {error}
+          <br></br>
+          Error: {errors}
+          <br></br>
         </span>
       )}
     </>
